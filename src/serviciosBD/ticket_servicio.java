@@ -33,6 +33,31 @@ public class ticket_servicio {
         
     } 
     
+    public String[][] getTicket(String idTicket){
+        String R[][];
+         
+        String SQL= "  SELECT  " +
+                    "	idTicket,  " + //0
+                    "	titulo,  " + //1
+                    "	descripcion,  " + //2
+                    "	fechaCreacion,  " + //3
+                    "	fechaVencimiento,  " + //4
+                    "	hash,  " + //5
+                    "	idEstadoTicket,  " + //6
+                    "	idPrioridadTicket,  " + //7
+                    "	idPersona,  " + //8
+                    "	idPersonaPropietario  " +//9
+                    "FROM ticket " +
+                    "WHERE idTicket='"+idTicket+"';  ";
+                 
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 10);
+        
+        return R;
+    }
+    
+    
+     
+     
     
     public String[][] getUltimoOrdenRespuestasTicket(String idTicket){
         String R[][];
@@ -265,6 +290,31 @@ public class ticket_servicio {
         
         return R;
     }
+    
+    public String[][] getTicketPorHash(String hash){
+        String R[][];
+         
+        String SQL= " SELECT  " +
+                    "	idTicket,  " + //0
+                    "	titulo,  " + //1
+                    "	descripcion,  " + //2
+                    "	fechaCreacion,  " + //3
+                    "	fechaVencimiento,  " + //4
+                    "	hash,  " + //5
+                    "	idEstadoTicket,  " + //6
+                    "	idPrioridadTicket,  " + //7
+                    "	idPersona,  " + //8
+                    "	idPersonaPropietario " + //9
+                    "FROM `ticket` " +
+                    "WHERE hash='"+hash+"'  ;";
+                 
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 10);
+        
+        
+        
+        return R;
+    }
+    
     
     public String insertaTicket( String titulo,String descripcion, String fechaCreacion,String fechaVencimiento, String hash,String idEstado,  String idPrioridad, String idPersona , String idPropietario){
         

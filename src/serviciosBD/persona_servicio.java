@@ -121,7 +121,7 @@ public class persona_servicio {
     
     public String[][] LISTAempleadosEstadoActivoYUsuarioAdministradoresString(String estado) {
         String Tabla[][];
-        String SQL= "SELECT * " +
+        String SQL= /*"SELECT * " +
                     "FROM " +
                     "	(SELECT " +
                     "		CONCAT(p.apellidoPaterno,' ',p.apellidoMaterno,' ',p.nombre ), " +
@@ -135,7 +135,7 @@ public class persona_servicio {
                     "	ORDER BY idPersona ASC, idRequisitos DESC) as v " +
                     "GROUP BY v.idPersona " +
                     "HAVING v.valorTexto='"+estado+"'    "+
-                    "UNION " +
+                    "UNION " + */
                     "SELECT 		" +
                     "	CONCAT(p.apellidoPaterno,' ',p.apellidoMaterno,' ',p.nombre ), 		" +
                     "	p.idPersona, 		" +

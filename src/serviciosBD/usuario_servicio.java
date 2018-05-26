@@ -19,6 +19,7 @@ public class usuario_servicio {
         
     }
     
+    
     public String acceso(String Usuario,String password ){
         String usuario;
         
@@ -36,6 +37,18 @@ public class usuario_servicio {
             usuario="";
         }
         return usuario;
+    }
+    
+    
+    public String[][] usuarioPorID(String idUsuarios ){
+        
+        String SQL=" SELECT idusuarios, usuario, password, idPersona, email " +
+                    " FROM `usuarios`  where  idusuarios="+idUsuarios+"   "
+                + ";";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 5);
+        
+        return R;
+        
     }
     
     
