@@ -105,18 +105,21 @@ public class peticiones_web_servicio {
         
         String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 6);
         
+        if (R != null){
+            
         
-        if (R.length>0){
-            for (int i=0;i<R[0].length;i++){
+            if (R.length>0){
+                for (int i=0;i<R[0].length;i++){
 
-                idVista=Integer.parseInt(R[0][0]);
-                nombreVista=R[0][1]!=null?R[0][1]:"";
-                idTipoVista=Integer.parseInt(R[0][2]);
-                controlador=R[0][3]!=null?R[0][3]:"";
-                metodo=R[0][4]!=null?R[0][4]:"";
-                aliasVisible=R[0][5]!=null?R[0][5]:"";
+                    idVista=Integer.parseInt(R[0][0]);
+                    nombreVista=R[0][1]!=null?R[0][1]:"";
+                    idTipoVista=Integer.parseInt(R[0][2]);
+                    controlador=R[0][3]!=null?R[0][3]:"";
+                    metodo=R[0][4]!=null?R[0][4]:"";
+                    aliasVisible=R[0][5]!=null?R[0][5]:"";
 
 
+                }
             }
         }
         

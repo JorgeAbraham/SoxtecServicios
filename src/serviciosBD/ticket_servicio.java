@@ -171,10 +171,10 @@ public class ticket_servicio {
                     " FROM ticket t " +
                     " inner JOIN estadoticket et on (t.idEstadoTicket = et.idEstadoTicket) " +
                     " inner JOIN prioridadticket pt on (t.idPrioridadTicket= pt.idPrioridadTicket) "+
-                    " left join respuestaticket rt on (rt.idPersona = t.idPersona) " +
-                    " left join ticketconcopia tcc on (tcc.idPersona = t.idPersona) "+
+                    " left join respuestaticket rt on (rt.idTicket = t.idTicket) " +
+                    " left join ticketconcopia tcc on (tcc.idTicket = t.idTicket ) "+
                     " left join tickethistorialpersonas thp on (thp.idPersona = t.idPersona) "+
-                    " where (t.idPersonaPropietario='"+idPersona+"'  OR t.idPersona='"+idPersona+"' )  AND t.idEstadoTicket IN ("+estadosLista+")  " +
+                    " where (t.idPersonaPropietario='"+idPersona+"'  OR t.idPersona='"+idPersona+"'  OR tcc.idPersona='"+idPersona+"'  OR rt.idPersona='"+idPersona+"'   )  AND t.idEstadoTicket IN ("+estadosLista+")  " +
                     " group by t.idTicket "+
                     " order by t.fechaCreacion DESC   ; ";
                     
@@ -333,6 +333,23 @@ public class ticket_servicio {
         return insertado;
         
     } 
+    
+     public String[][] getEstadoById(String idEstado){
+        String R[][];
+         
+        String SQL= " SELECT "
+                        + " estado "
+                    + " FROM  "
+                    + " estadoticket "
+                    + " WHERE idEstadoTicket="+idEstado+"  ;";
+                 
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 1);
+        
+        
+        
+        return R;
+    }
+    
     
     
 }

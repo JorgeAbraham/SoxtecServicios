@@ -25,7 +25,7 @@ public class documentos_servicio {
                     "	va.nombre, 	" + //1
                     "	r.valorTexto, 	" + //2
                     "	r.valorNumerico, 	" + //3
-                    "	r.valorFecha, 	" + //4
+                    "	DATE_FORMAT(r.valorFecha, '%d/%m/%Y'),	" + //4
                     "	MAX(r.idArchivo),     " + //5
                     "	va.idTipoVariable,    " + //6
                     "	r.idPersona,    " + //7
@@ -38,11 +38,7 @@ public class documentos_servicio {
                     "va.idVariableAlmacenamiento   " +
                     "order by orden asc";
                  
-              
-                 
         R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 9);
-        
-        
         
         return R;
     }

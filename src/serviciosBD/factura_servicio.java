@@ -38,6 +38,8 @@ public class factura_servicio {
     float precioHorasRegulares;
     float precioHorasExtra;
     
+    String lugar;
+    String estatus;
    
 
     public factura_servicio() {
@@ -200,6 +202,25 @@ public class factura_servicio {
     public void setPrecioHorasExtra(float precioHorasExtra) {
         this.precioHorasExtra = precioHorasExtra;
     }
+
+    public String getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(String lugar) {
+        this.lugar = lugar;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
+    
+    
+    
     
     
     public boolean claveFacturaRepetida(String claveFactura){
@@ -212,7 +233,45 @@ public class factura_servicio {
         return factura;
     }
     
+    public boolean claveOrdenRepetida(String po){
+        boolean factura;
+        
+        String SQL="select po from factura where po='"+po+"' ;";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 1);
+        
+        factura = R.length>0;
+        return factura;
+    }
     
+    
+    public DefaultTableModel  LISTAfacturasEstado() {
+        
+        DefaultTableModel Tabla;
+        String SQL= "   SELECT  " +
+                    "	f.claveFactura, " +
+                    "   f.idfactura,  "+
+                    "	f.po, " +
+                    "	f.periodoInicio, " +
+                    "	f.periodoFin, " +
+                    "	f.fechaPago, " +
+                    "	f.total, " +
+                    "	c.valor " +
+                    "FROM factura f " +
+                    "left join catalogo c on c.idCatalogo=f.estadoPago"
+                    + " ORDER BY f.idfactura DESC  ;";
+        String columnas[]=new String[8];
+        columnas[0]="Invoice"; 
+        columnas[1]="Internal ID"; 
+        columnas[2]="Order Puchase"; 
+        columnas[3]="Start Date"; 
+        columnas[4]="End Date"; 
+        columnas[5]="Payment Date"; 
+        columnas[6]="TOTAL"; 
+        columnas[7]="State"; 
+        Tabla=ManejadorDeDatos.BD.consultaTabla(SQL, columnas);
+        return Tabla;
+        
+    }
     
     public boolean insertaFactura(
             
@@ -249,8 +308,8 @@ public class factura_servicio {
         if (!actualizarInformacion){
             
             SQL = "INSERT INTO `soxtecdb`.`factura` "
-                    + "       (`claveFactura`,`descripcion`, `fecha`, `nombre`, `direccion`, `solicitante`, `po`, `vendedor`, `periodoInicio`, `periodoFin`, `subtotal`, `impuestos`, `expTram`, `total`,`costoHorasRegulares`,  `costoHrasExtra`) "
-                    + "VALUES ('"+claveFactura+"', '"+descripcion+"', '"+fecha+"', '"+nombre+"', '"+direccion+"', '"+solicitante+"', '"+po+"', '"+vendedor+"', '"+periodoInicio+"', '"+periodoFin+"', '"+subTotal+"', '"+impuestos+"', '"+expTram+"', '"+total+"' , '"+precioHorasRegulares+"','"+precioHorasExtras+"'   );";
+                    + "       (`claveFactura`,`descripcion`, `fecha`, `nombre`, `direccion`, `solicitante`, `po`, `vendedor`, `periodoInicio`, `periodoFin`, `subtotal`, `impuestos`, `expTram`, `total`,`costoHorasRegulares`,  `costoHrasExtra`,`lugar`,`estado`  ) "  
+                    + "VALUES ('"+claveFactura+"', '"+descripcion+"', '"+fecha+"', '"+nombre+"', '"+direccion+"', '"+solicitante+"', '"+po+"', '"+vendedor+"', '"+periodoInicio+"', '"+periodoFin+"', '"+subTotal+"', '"+impuestos+"', '"+expTram+"', '"+total+"' , '"+precioHorasRegulares+"','"+precioHorasExtras+"' ,"+lugar+","+estatus+"  );";
             utilidadVinculoBD.operacionSQL(SQL);
             
             SQL="SELECT @@identity AS id";
@@ -263,7 +322,8 @@ public class factura_servicio {
             SQL = "UPDATE `factura` SET `claveFactura`='"+claveFactura+"', `descripcion`='"+descripcion+"', `fecha`='"+fecha+"', `nombre`='"+nombre+"', "
                     + "`direccion`='"+direccion+"', `solicitante`='"+solicitante+"', `po`='"+po+"', `vendedor`='"+vendedor+"', `periodoInicio`='"+periodoInicio+"',"
                     + " `periodoFin`='"+periodoFin+"', `subtotal`='"+subTotal+"', `impuestos`='"+impuestos+"', `expTram`='"+expTram+"', `total`='"+total+"', "
-                    + "`costoHorasRegulares`='"+precioHorasRegulares+"', `costoHrasExtra`='"+precioHorasExtras+"' WHERE `idFactura`='"+idFactura+"';";
+                    + "`costoHorasRegulares`='"+precioHorasRegulares+"', `costoHrasExtra`='"+precioHorasExtras+"',  `lugar`='"+lugar+"',   `estado`='"+estatus+"'   "  
+                    + "     WHERE `idFactura`='"+idFactura+"';";
             
             utilidadVinculoBD.operacionSQL(SQL);
             
@@ -470,32 +530,37 @@ public class factura_servicio {
     public String[][] informacionFactura(String idFactura) {
         
         String R[][];
-        String SQL="SELECT "
-                    + "idFactura, "
-                    + "claveFactura, "
-                    + "descripcion, " 
-                    + "fecha, "
-                    + "nombre, "
-
-                    + "direccion, "
-                    + "solicitante, "
-                    + "po, "
-                    + "vendedor, " 
-                    + "periodoInicio, "
-
-                    + "periodoFin, "
-                    + "subtotal, "
-                    + "impuestos, " 
-                    + "expTram, "
-                    + "total,  " 
+        String SQL=
+                    "SELECT  " +
+                    "	f.idFactura,  " +  //0
+                    "	f.claveFactura,  " + //1
+                    "	f.descripcion,  " + //2
+                    "	f.fecha,  " + //3
+                    "	f.nombre,  " + //4
+                    "	f.direccion,  " + //5
+                    "	f.solicitante,  " + //6
+                    "	f.po,  " + //7
+                    "	f.vendedor,  " + //8
+                    "	f.periodoInicio,  " + //9
+                    "	f.periodoFin,  " + //10
+                    "	f.subtotal,  " + //11
+                    "	f.impuestos,  " + //12
+                    "	f.expTram,  " + //13
+                    "	f.total,   " + //14
+                    "	f.costoHorasRegulares,   " + //15
+                    "	f.costoHrasExtra  , " + //16
+                    "	l.nombre, " + //17
+                    "	c.valor,  " + //18
+                    "	df.descripcion  " + //19
+                    "FROM factura f "
                 
-                    + "costoHorasRegulares,  "
-                    + "costoHrasExtra  " 
+                    + " left join lugar l on l.idLugar = f.lugar " 
+                    + " left join catalogo c on c.idCatalogo = f.estado "
+                    + " left join detallefactura df on f.idFactura=df.idFactura  AND precioUnitario = 0  "
                 
-
-                    + "FROM factura "
-                    + "WHERE idFactura="+idFactura+" ;";
-        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 17);
+              
+                    + "WHERE f.idFactura="+idFactura+" ;";
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 20);
         return R;
         
     }
@@ -565,7 +630,44 @@ public class factura_servicio {
         return Tabla;
     }
        
-           
+         
+    public String actualizaFacturaEstado(String idFactura,String estado,String fecha){
+        
+        String insertado=null;
+        String SQL = "  UPDATE `factura` SET `estadoPago`='"+estado+"' ,  fechaPago='"+fecha+"'    WHERE `idFactura`='"+idFactura+"';   "   ;
+        utilidadVinculoBD.operacionSQL(SQL);
+        
+        SQL="SELECT @@identity AS id";
+        String R[][] = ManejadorDeDatos.BD.ConsultaCuadro(SQL, 1);
+        
+        if (R.length>0){
+            insertado=R[0][0];
+        } 
+        
+        return insertado;
+        
+    } 
+    
+    
+    public String actualizaFacturaEstado(String idFactura,String estado){
+        
+        String insertado=null;
+        String SQL = "  UPDATE `factura` SET `estadoPago`='"+estado+"'   WHERE `idFactura`='"+idFactura+"';   "   ;
+        utilidadVinculoBD.operacionSQL(SQL);
+        
+        SQL="SELECT @@identity AS id";
+        String R[][] = ManejadorDeDatos.BD.ConsultaCuadro(SQL, 1);
+        
+        if (R.length>0){
+            insertado=R[0][0];
+        } 
+        
+        return insertado;
+        
+    } 
+    
+   
+
  
     
 }

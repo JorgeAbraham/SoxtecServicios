@@ -5,6 +5,7 @@
  */
 package serviciosBD;
 
+import javax.swing.DefaultComboBoxModel;
 import utilidadesbasicas.utilidadVinculoBD;
 
 /**
@@ -16,6 +17,62 @@ public class catalogo_servicio {
     public catalogo_servicio() {
     
     }
+    
+    
+    
+    public String[][] listaPorTipoCatalogo( int idCatalogoTipo ){
+        
+        String SQL= "  SELECT  idCatalogo,valor " +
+                    "FROM `catalogo`  " +
+                    "WHERE idCatalogoTipo = "+idCatalogoTipo+" ;";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 2);
+        return R;
+    }
+    
+    public String[][] catalogoPorId( String idCatalogo ){
+        
+        String SQL= "  SELECT  valor " +
+                    "FROM `catalogo`  " +
+                    "WHERE idCatalogo = "+idCatalogo+" ;";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 1);
+        return R;
+    }
+    
+    
+    
+    public DefaultComboBoxModel listaComboPorTipoCatalogoEspacionEnBlanco( int idCatalogoTipo ){
+        DefaultComboBoxModel combo;
+        String SQL=" SELECT '' "
+                + " UNION "
+                + "  SELECT  valor " +
+                    "FROM `catalogo`  " +
+                    "WHERE idCatalogoTipo = "+idCatalogoTipo+" ;";
+        combo=ManejadorDeDatos.BD.consultaCombo(SQL);
+        return combo;
+    }
+    
+    
+    public DefaultComboBoxModel listaComboPorTipoCatalogo( int idCatalogoTipo ){
+        DefaultComboBoxModel combo;
+        String SQL="SELECT  valor " +
+                    "FROM `catalogo`  " +
+                    "WHERE idCatalogoTipo = "+idCatalogoTipo+" ;";
+        combo=ManejadorDeDatos.BD.consultaCombo(SQL);
+        return combo;
+    }
+    
+    
+    public String idCatalogoPorValorYTipo( String valor, String tipo ){
+        
+        String SQL= " SELECT idCatalogo FROM catalogo where idCatalogoTipo="+tipo+" AND valor='"+valor+"' ; ";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 1);
+        return R[0][0];
+        
+    }
+    
+    
+    
+    
     
     public String[][] listaCuentas( ){
         
