@@ -5,3 +5,5 @@
 /build/web/*
 /web/WEB-INF/
 /nbproject/
+/src/serviciosBD/ManejadorDeDatos.java
+
