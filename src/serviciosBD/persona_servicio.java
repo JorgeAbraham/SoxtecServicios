@@ -39,7 +39,68 @@ public class persona_servicio {
      public persona_servicio() {
          
      }
-           
+    
+     
+    public String[][] LISTAEmpleadosPorStringYSinAsignar(String condiciones,String whereCondiciones) {
+    
+        
+        String Where="";
+        
+        if (whereCondiciones!=null){
+            Where="WHERE "+whereCondiciones;
+        }
+        
+        
+        
+        String Tabla[][];
+        String SQL= " SELECT * FROM ( "
+                +   " Select " +
+                    " *  " +
+                    " FROM " +
+                    "	(SELECT  " +
+                    "		CONCAT(p.apellidoPaterno,' ',p.apellidoMaterno,' ',p.nombre ) as name, " +
+                    "		p.idPersona, " +
+                    "		r.idRequisitos, " +
+                    "		r.valorTexto, " +
+                    "           l.nombre "+
+                    "	FROM persona p  " +
+                    "	INNER JOIN tipopersona tp  ON (p.idTipoPersona=tp.idTipoPersona) " +
+                    "	INNER JOIN requisitos r ON r.idPersona=p.idPersona " +
+                    "   LEFT JOIN personalugar pl ON p.idPersona=pl.Persona_idPersona " +
+                    "   LEFT JOIN lugar l on pl.Lugar_idLugar=l.idLugar "+
+                    "	WHERE p.idTipoPersona=2  AND r.idVariableAlmacenamiento = 30 " +
+                    "	ORDER BY idPersona ASC, idRequisitos DESC) as v " +
+                    " GROUP BY v.idPersona " +
+                    " HAVING "+condiciones+"  " +
+                    " UNION " +
+                    " SELECT " +
+                    "		CONCAT(p.apellidoPaterno,' ',p.apellidoMaterno,' ',p.nombre ) as name, " +
+                    "		p.idPersona, " +
+                    "		r.idRequisitos, " +
+                    "		r.valorTexto ," +
+                    "           l.nombre "+
+                    "	FROM persona p  " +
+                    "	INNER JOIN tipopersona tp  ON (p.idTipoPersona=tp.idTipoPersona) " +
+                    "	LEFT JOIN requisitos r ON r.idPersona=p.idPersona " +
+                    "   LEFT JOIN personalugar pl ON p.idPersona=pl.Persona_idPersona " +
+                    "   LEFT JOIN lugar l on pl.Lugar_idLugar=l.idLugar "+
+                    "	WHERE p.idTipoPersona=2  AND r.idRequisitos is null   "
+                + "    ) as Tabla   "+Where+"   ORDER BY name ";
+     
+        Tabla=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 5);
+        return Tabla;
+    
+    }
+     
+     
+     
+    public String[][] LISTAEmpleadosPorStringYSinAsignar(String condiciones) {
+        
+        return LISTAEmpleadosPorStringYSinAsignar(condiciones,null);
+        
+    }
+     
+     
      
      
     public persona_servicio(int idUsuario) {
@@ -346,6 +407,9 @@ public class persona_servicio {
         return Tabla;
         
     }
+    
+    
+   
     
     
     public String[][] LISTAempleadosEstadoActivoString(String estado, String BuscarNombre, String Lugar) {

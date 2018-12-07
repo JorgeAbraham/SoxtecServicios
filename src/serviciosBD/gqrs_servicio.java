@@ -181,7 +181,7 @@ public class gqrs_servicio {
     public boolean insertaGQRS(String gqrs,String fechaApertura,String fechaCierre,String estado,String idFactura,String descripcion,String familia,String cs_ccr,String idLugar,String sorteado,String rechazado,String retrabajado,String idPersona){
          boolean correct=false;
         
-        String SQL=" INSERT INTO `soxtecdb`.`gqrs` (`gqrs`, `fechaApertura`, `fechaCierre`, `estado`, `idFactura`, `descripcion`, `familia`, `cs_ccr`, `idLugar`, `sorteado`, `rechazado`, `retrabajado`, `idPersona`)  "
+        String SQL=" INSERT INTO `gqrs` (`gqrs`, `fechaApertura`, `fechaCierre`, `estado`, `idFactura`, `descripcion`, `familia`, `cs_ccr`, `idLugar`, `sorteado`, `rechazado`, `retrabajado`, `idPersona`)  "
                 + "      VALUES ('"+gqrs+"', '"+fechaApertura+"', "+fechaCierre+", '"+estado+"', "+idFactura+", '"+descripcion+"', '"+familia+"', '"+cs_ccr+"', '"+idLugar+"', '"+sorteado+"', '"+rechazado+"', '"+retrabajado+"', '"+idPersona+"');  ";
         utilidadVinculoBD.operacionSQL(SQL);
         

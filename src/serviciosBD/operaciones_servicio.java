@@ -66,7 +66,7 @@ public class operaciones_servicio {
     public String insertaRelacionOperaciones(String idOperacion1, String idOperacion2,String idRelacionOperacion){
         
         String insertado=null;
-        String SQL = "INSERT INTO `soxtecdb`.`relacionoperaciones` (`idOperacion1`, `idOperacion2`, `idTipoRelacion`)    "
+        String SQL = "INSERT INTO `relacionoperaciones` (`idOperacion1`, `idOperacion2`, `idTipoRelacion`)    "
                     + "VALUES ('"+idOperacion1+"', '"+idOperacion2+"', '"+idRelacionOperacion+"');";
         utilidadVinculoBD.operacionSQL(SQL);
         

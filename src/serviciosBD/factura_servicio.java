@@ -307,7 +307,7 @@ public class factura_servicio {
         
         if (!actualizarInformacion){
             
-            SQL = "INSERT INTO `soxtecdb`.`factura` "
+            SQL = "INSERT INTO `factura` "
                     + "       (`claveFactura`,`descripcion`, `fecha`, `nombre`, `direccion`, `solicitante`, `po`, `vendedor`, `periodoInicio`, `periodoFin`, `subtotal`, `impuestos`, `expTram`, `total`,`costoHorasRegulares`,  `costoHrasExtra`,`lugar`,`estado`  ) "  
                     + "VALUES ('"+claveFactura+"', '"+descripcion+"', '"+fecha+"', '"+nombre+"', '"+direccion+"', '"+solicitante+"', '"+po+"', '"+vendedor+"', '"+periodoInicio+"', '"+periodoFin+"', '"+subTotal+"', '"+impuestos+"', '"+expTram+"', '"+total+"' , '"+precioHorasRegulares+"','"+precioHorasExtras+"' ,"+lugar+","+estatus+"  );";
             utilidadVinculoBD.operacionSQL(SQL);
