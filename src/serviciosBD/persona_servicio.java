@@ -35,6 +35,7 @@ public class persona_servicio {
     
     public static String SOLICITUD_BAJA="solictudBaja";
     
+    public static String SOLICITUD_ALTA="solictudAlta";
     
      public persona_servicio() {
          

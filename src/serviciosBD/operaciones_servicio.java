@@ -290,9 +290,8 @@ public class operaciones_servicio {
         
     }   
     
-    
-    public String[][] listaOperacionesConcatenadas(ArrayList<String> concepto,ArrayList<String> estadosOperacion,ArrayList<String> idCatalogoOperacion,String adicionalCampo,String adicionalCondicion,int numeroAdicionales,String where,ArrayList<Boolean> lista){
-         String tipoOperacionLista = listToString.listaEntreComas(idCatalogoOperacion);
+    public String[][] listaOperacionesConcatenadas(ArrayList<String> concepto,ArrayList<String> estadosOperacion,ArrayList<String> idCatalogoOperacion,String adicionalCampo,String adicionalCondicion,int numeroAdicionales,String where,ArrayList<Boolean> lista,String ORDERBY){
+              String tipoOperacionLista = listToString.listaEntreComas(idCatalogoOperacion);
         String estadosLista = listToString.listaEntreComas(estadosOperacion);
         
         
@@ -383,17 +382,27 @@ public class operaciones_servicio {
             }
         }
         
+        String ORDER="";
+        if (ORDERBY !=null){
+            ORDER=ORDERBY;
+        }else{
+            ORDER=" ORDER BY o.idOperacion DESC, o.fechaCreacion DESC  ";
+        }
         
         SQL=SQL+" WHERE o.idCatalogoOperacion  IN (  "+tipoOperacionLista+"  )   AND  " +
                 " o.idEstadoOperacion IN ("+estadosLista+")  "+ where +  whereLista  +
-                " ORDER BY o.idOperacion DESC, o.fechaCreacion DESC  "
-                
+                " "+ORDER+" "
                 + "  ; ";
         
                 
         
         String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, concepto.size()+5+numeroAdicionales);
         return R;
+    }
+    
+    
+    public String[][] listaOperacionesConcatenadas(ArrayList<String> concepto,ArrayList<String> estadosOperacion,ArrayList<String> idCatalogoOperacion,String adicionalCampo,String adicionalCondicion,int numeroAdicionales,String where,ArrayList<Boolean> lista){
+          return listaOperacionesConcatenadas( concepto,estadosOperacion,idCatalogoOperacion,adicionalCampo,adicionalCondicion,numeroAdicionales,where,lista,null);
     }
     
     

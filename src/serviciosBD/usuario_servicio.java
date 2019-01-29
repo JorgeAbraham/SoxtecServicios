@@ -20,6 +20,18 @@ public class usuario_servicio {
     }
     
     
+    public String[][] listaUsuarios( ){
+        
+        String SQL="SELECT idusuarios, usuario " +
+                    "FROM `usuarios`  "+ 
+                    ";";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 2);
+        
+        
+        return R;
+    }
+    
+    
     public String acceso(String Usuario,String password ){
         String usuario=null;
         

@@ -13,6 +13,7 @@ public class peticiones_web_servicio {
     
     
     public final static int menuPrincipal=1;
+    public final static int menuSecundario=54;
     
     int idVista;
     String nombreVista;
@@ -151,6 +152,91 @@ public class peticiones_web_servicio {
         return R;
         
     }
+    
+    
+     public String[][] getVistasPoridTipoVista(String tipoDeVista) {
+        
+        String R[][];
+        
+        String SQL= "SELECT  " +
+                    "	v.idVista,  " +
+                    "	v.nombreVista,  " +
+                    "	v.idTipoVista,  " +
+                    "	v.controlador,  " +
+                    "	v.metodo,  " +
+                    "	v.aliasVisible  " +
+                    "FROM vista v " +
+                    "WHERE v.idTipoVista = '"+tipoDeVista+"'    " +
+                    "; ";
+        
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 6);
+        return R;
+        
+    }
+     
+     
+       public String[][] getVistasPorRelacion(String idTipoRelacionVista) {
+        
+        String R[][];
+        
+        String SQL=   " SELECT "
+                    + "     rv.idVista1, "
+                    + "     rv.idVista2, "
+                    + "     v1.aliasVisible, "
+                    + "     v2.aliasVisible "
+                    + " FROM relacionvista rv " +
+                    " INNER JOIN vista v1 on rv.idVista1 = v1.idVista " +
+                    " INNER JOIN vista v2 on rv.idVista2 = v2.idVista " +
+                    " WHERE rv.idTipoRelacionVista="+idTipoRelacionVista+"   "
+                    + " ORDER BY  rv.idRelacionVista ASC  ";
+        
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 4);
+        return R;
+        
+    }
+       
+    
+    public String[][] getVistasPorID(String idVista) {
+        
+        String R[][];
+        String SQL= "SELECT  " +
+                    "	v.idVista,  " +
+                    "	v.nombreVista,  " +
+                    "	v.idTipoVista,  " +
+                    "	v.controlador,  " +
+                    "	v.metodo,  " +
+                    "	v.aliasVisible  " +
+                    " FROM vista v    "+
+                    " WHERE v.idVista="+idVista+"   "+
+                    " " +
+                    "; ";
+        
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 6);
+        return R;
+    }
+       
+    
+    public String[][] getVistasPorAliasVisible(String alias) {
+        
+        String R[][];
+        String SQL= "SELECT  " +
+                    "	v.idVista,  " +
+                    "	v.nombreVista,  " +
+                    "	v.idTipoVista,  " +
+                    "	v.controlador,  " +
+                    "	v.metodo,  " +
+                    "	v.aliasVisible  " +
+                    " FROM vista v    "+
+                    " WHERE v.aliasVisible='"+alias+"'   "+
+                    " " +
+                    "; ";
+        
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 6);
+        return R;
+    }
+       
+    
+
     
     
     

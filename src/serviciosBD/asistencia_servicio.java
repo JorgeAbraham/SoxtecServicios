@@ -33,6 +33,21 @@ public class asistencia_servicio {
     }
     
     
+    public String[][] listaRegistroAsistencia(  String idOperacion, String fila  ){
+        
+        
+         String SQL= " SELECT c.nombre,IF(co.valorTexto='hora', \"1\", IF(co.valorTexto='media', \"1/2\",co.valorTexto )) as Valor  from operacion o   " +
+                    " LEFT JOIN pertenenciadevalores pv on pv.idOperacion   =o.idOperacion " +
+                    " LEFT JOIN conceptooperacion co on pv.idConceptoOperacion=co.idConceptoOperacion " +
+                    " LEFT JOIN concepto c on c.idConcepto=pv.idConcepto " +
+                    " WHERE o.idCatalogoOperacion=21 AND o.idOperacion="+idOperacion+" AND pv.fila='"+fila+"' AND c.idConcepto IN (99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,123,117,118,119,120,121) "
+                 + " ORDER BY o.idOperacion DESC "
+                 + ""
+                 + "" ; 
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 2);
+        return R;
+        
+    }
     
     public DefaultTableModel  listaChecadasTabla() {
         

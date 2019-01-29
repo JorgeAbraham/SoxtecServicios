@@ -15,6 +15,32 @@ import utilidadesbasicas.utilidadVinculoBD;
 public class documentos_servicio {
     
     
+     public String[][] getDocumentosPorTipoEIdDeEmpleado(String tipoDocumento){
+        String R[][];
+         
+        String SQL= " SELECT   " +
+                    "	r.idRequisitos,   " +
+                    "	r.idPersona,  " +
+                    "	r.valorTexto,  " +
+                    "	r.valorNumerico,  " +
+                    "	r.valorFecha,  " +
+                    "	r.idArchivo,  " +
+                    "	r.idVariableAlmacenamiento,  " +
+                    "	r.indice, " +
+                    "	CONCAT(p.apellidoPaterno,' ',p.apellidoMaterno,' ',p.nombre  ) " +
+                    " FROM persona p   " +
+                    " LEFT JOIN requisitos r  on r.idPersona=p.idPersona " +
+                    " LEFT JOIN variablealmacenamiento va on (r.idVariableAlmacenamiento=va.idVariableAlmacenamiento)   " +
+                    " WHERE   va.idRazonAlmacenamiento = "+tipoDocumento+"    " +
+                    " ORDER BY p.apellidoPaterno ASC, p.apellidoMaterno ASC;    ";
+                 
+        R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 9);
+        
+        return R;
+    }
+    
+    
+    
     
     
     public String[][] getDocumentosPorTipoEIdDeEmpleado(String tipoDocumento,String idEmpleado){
