@@ -94,16 +94,24 @@ public class operaciones_servicio {
     
     
     
-    public String[][] getCatalogosOperaciones(ArrayList<String> idOperacion){
+    public String[][] getArchivoDeOperacion(String idOperacion,  String idConcepto ){
         
-        String tipoOperacionLista = listToString.listaEntreComas(idOperacion);
-        
-        String SQL="SELECT idCatalogoOperacion,nombre,descripcion FROM catalogooperacion where idCatalogoOperacion in ("+tipoOperacionLista+"); ";
-        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 3);
+          
+        String SQL= " SELECT co.idArchivo,a.nombreArchivo  " +
+                    " FROM pertenenciadevalores pv   " +
+                    " INNER JOIN concepto c on c.idConcepto=pv.idConcepto   " +
+                    " INNER JOIN conceptooperacion co on co.idConceptoOperacion=pv.idConceptoOperacion   " +
+                    " INNER JOIN archivo a on a.idArchivo=co.idArchivo " +
+                    " WHERE pv.idOperacion = "+idOperacion+" AND c.idConcepto = "+idConcepto+"  ; ";
+        String R[][]=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 2);
         return R;
         
         
     }
+    
+    
+    
+   
     
  
     

@@ -154,20 +154,25 @@ public class peticiones_web_servicio {
     }
     
     
-     public String[][] getVistasPoridTipoVista(String tipoDeVista) {
+     public String[][] getVistasPoridTipoVista(String tipoDeVista, String idUsuario, String tipoRelacion) {
         
         String R[][];
         
-        String SQL= "SELECT  " +
-                    "	v.idVista,  " +
-                    "	v.nombreVista,  " +
-                    "	v.idTipoVista,  " +
-                    "	v.controlador,  " +
-                    "	v.metodo,  " +
-                    "	v.aliasVisible  " +
-                    "FROM vista v " +
-                    "WHERE v.idTipoVista = '"+tipoDeVista+"'    " +
-                    "; ";
+        String SQL= " SELECT  " +
+                    "     v1.idVista,   " +
+                    "	v1.nombreVista,   " +
+                    "	v1.idTipoVista,   " +
+                    "	v1.controlador,   " +
+                    "	v1.metodo,   " +
+                    "	v1.aliasVisible  " +
+                    " FROM relacionvista rv  " +
+                    " INNER JOIN vista v1 on rv.idVista1 = v1.idVista  " +
+                    " INNER JOIN vista v2 on rv.idVista2 = v2.idVista  " +
+                    " INNER JOIN vistaperfil vp on v2.idVista=vp.idVista  " +
+                    " INNER JOIN permiso p on vp.idPerfil=p.idPerfil AND p.idUsuarios='"+idUsuario+"'  " +
+                    " WHERE rv.idTipoRelacionVista='"+tipoRelacion+"' AND v1.idTipoVista = '"+tipoDeVista+"'  " +
+                    " GROUP BY idVista1  " +
+                    " ORDER BY  rv.idRelacionVista ASC  ;";
         
         R=ManejadorDeDatos.BD.ConsultaCuadro(SQL, 6);
         return R;
